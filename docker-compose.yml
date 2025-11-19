@@ -1,6 +1,8 @@
 services:
   backend:
     build: ./backend
+    depends_on:
+      - mongo
     container_name: backend-container
     ports:
       - "5000:5000"
@@ -20,3 +22,14 @@ services:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev -- --host --port 3000
+
+  mongo:
+    image: mongo:6
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
