@@ -1,0 +1,214 @@
+**AUTH API PAYLOADS**
+(1) POST /auth/signup
+
+Request Body
+{
+  "name": "Rohit Joshi",
+  "email": "rohit@example.com",
+  "password": "123456"
+}
+Response
+{
+  "success": true,
+  "userId": "65a2c9df8f1e5",
+  "token": "jwt-or-firebase-token"
+}
+Error
+{ "success": false, "message": "Email already exists" }
+
+(2) POST /auth/login
+
+Request Body
+{
+  "email": "rohit@example.com",
+  "password": "123456"
+}
+
+Response
+{
+  "success": true,
+  "user": {
+    "id": "65a2c9df8f1e5",
+    "name": "Rohit Joshi",
+    "email": "rohit@example.com"
+  },
+  "token": "jwt-or-firebase-token"
+}
+Error
+{ "success": false, "message": "Invalid credentials" }
+
+**USER API PAYLOADS**
+
+(3) GET /user/profile
+
+Response
+{
+  "success": true,
+  "user": {
+    "id": "65ab39c8",
+    "name": "Rohit",
+    "email": "rohit@example.com",
+    "preferences": {
+      "budgetPref": "medium",
+      "travelStyle": ["food", "relax"]
+    }
+  }
+}
+
+(4) PUT /user/preferences
+
+Request Body
+{
+  "budgetPref": "low",
+  "travelStyle": ["adventure", "nature"]
+}
+Response
+{
+  "success": true,
+  "message": "Preferences updated"
+}
+
+
+**TRIP API PAYLOADS**
+
+(5) POST /trip/generate
+
+Request Body
+{
+  "source": "Mumbai",
+  "destination": "Goa",
+  "days": 3,
+  "interests": ["beach", "food"],
+  "budget": 8000
+}
+
+Response    
+{
+  "success": true,
+  "tripDraft": {
+    "summary": "3-day Goa trip",
+    "budgetEstimate": 7500,
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival + Baga Beach",
+        "activities": [
+          { "time": "09:00", "activity": "Check-in" },
+          { "time": "12:00", "activity": "Visit Baga Beach" }
+        ]
+      }
+    ]
+  }
+}
+
+Error
+{ "success": false, "message": "Unable to generate itinerary" }
+
+
+6) POST /trip/save
+
+Request Body
+
+{
+  "tripName": "Goa Weekend Trip",
+  "source": "Mumbai",
+  "destination": "Goa",
+  "days": 3,
+  "budgetEstimate": 7500,
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Arrival + Baga Beach",
+      "activities": [
+        { "time": "12:00", "activity": "Visit Baga Beach" }
+      ]
+    }
+  ]
+}
+
+Response
+{
+  "success": true,
+  "tripId": "65ab49d92f77a"
+}
+
+(7) PUT /trip/update/:tripId
+
+Request Body
+{
+  "tripName": "Goa Fun Trip",
+  "days": 4
+}
+
+Response
+{
+  "success": true,
+  "message": "Trip updated successfully"
+}
+
+(8) DELETE /trip/delete/:tripId
+
+Response
+{
+  "success": true,
+  "message": "Trip deleted"
+}
+
+(9) GET /trip/list
+
+Response
+{
+  "success": true,
+  "trips": [
+    {
+      "id": "65ab49d92f77a",
+      "tripName": "Goa Weekend Trip",
+      "destination": "Goa",
+      "days": 3
+    }
+  ]
+}
+
+(10) GET /trip/details/:tripId
+
+Response
+{
+  "success": true,
+  "trip": {
+    "tripName": "Goa Weekend Trip",
+    "destination": "Goa",
+    "days": 3,
+    "itinerary": [ ... ]
+  }
+}
+
+(11) GET /destination/list
+
+Response
+
+{
+  "success": true,
+  "destinations": [
+    { "id": "goa01", "name": "Goa", "tags": ["beach", "party"] }
+  ]
+}
+
+(12) GET /destination/details/:id
+
+Response
+{
+  "success": true,
+  "destination": {
+    "name": "Goa",
+    "summary": "Famous for beaches...",
+    "places": [
+      {
+        "placeId": "baga01",
+        "name": "Baga Beach",
+        "category": "beach"
+      }
+    ]
+  }
+}
+
+
